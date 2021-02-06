@@ -1,60 +1,46 @@
+require(`dotenv`).config({
+  path: `.env`,
+})
+
+const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE
+
 module.exports = {
   siteMetadata: {
-    title: `Blog by Jason P Kovalski`,
-    name: `JPK Blog`,
+    siteTitle: `JPK`,
+    siteTitleAlt: `Blog by Jason P Kovalski`,
+    siteHeadline: `Minimal Blog - Gatsby Theme from @lekoarts`,
     siteUrl: `https://jasonpkovalski.me`,
-    description: `A blog about technology, finance, and more.`,
-    hero: {
-      heading: `A blog about technology, finance, and more.`,
-      maxWidth: 652,
-    },
-    social: [
-      {
-        name: `twitter`,
-        url: `https://twitter.com/grim_ssbu`,
-      },
-      {
-        name: `instagram`,
-        url: `https://www.instagram.com/jk1.618`,
-      },
-      {
-        name: `linkedin`,
-        url: `https://www.linkedin.com/in/jasonkovalski`,
-      },
-      {
-        name: `github`,
-        url: `https://github.com/jasonpkovalski`,
-      },
-    ],
+    siteDescription: `A blog about technology, finance, and more.`,
+    siteLanguage: `en`,
   },
   plugins: [
     {
-      resolve: "@narative/gatsby-theme-novela",
+      resolve: `@lekoarts/gatsby-theme-minimal-blog`,
       options: {
-        contentPosts: "content/posts",
-        contentAuthors: "content/authors",
-        basePath: "/",
-        authorsPage: false,
-        sources: {
-          local: true,
-        },
-      },
-    },
-    {
-      resolve: `gatsby-plugin-manifest`,
-      options: {
-        name: `Blog by Jason P Kovalski`,
-        short_name: `JPK Blog`,
-        start_url: `/`,
-        background_color: `#fff`,
-        theme_color: `#fff`,
-        display: `standalone`,
-        icon: `src/assets/favicon.png`,
-      },
-    },
-    {
-      resolve: `gatsby-plugin-netlify-cms`,
-      options: {
+        navigation: [
+          {
+            title: `Blog`,
+            slug: `/blog`,
+          },
+        ],
+        externalLinks: [
+          {
+            name: `Twitter`,
+            url: `https://twitter.com/grim_ssbu`,
+          },
+          {
+            name: `Instagram`,
+            url: `https://www.instagram.com/jk1.618`,
+          },
+          {
+            name: `LinkedIn`,
+            url: `https://www.linkedin.com/in/jasonkovalski`,
+          },
+          {
+            name: `GitHub`,
+            url: `https://github.com/jasonpkovalski`,
+          },
+        ],
       },
     },
     {
@@ -73,5 +59,40 @@ module.exports = {
         },
       },
     },
-  ],
-};
+    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Blog by Jason P Kovalski`,
+        short_name: `JPK Blog`,
+        description: `A blog about technology, finance, and more.`,
+        start_url: `/`,
+        background_color: `#fff`,
+        theme_color: `#6B46C1`,
+        display: `standalone`,
+        icons: [
+          {
+            src: `/android-chrome-192x192.png`,
+            sizes: `192x192`,
+            type: `image/png`,
+          },
+          {
+            src: `/android-chrome-512x512.png`,
+            sizes: `512x512`,
+            type: `image/png`,
+          },
+        ],
+      },
+    },
+    `gatsby-plugin-offline`,
+    `gatsby-plugin-netlify`,
+    shouldAnalyseBundle && {
+      resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
+      options: {
+        analyzerMode: `static`,
+        reportFilename: `_bundle.html`,
+        openAnalyzer: false,
+      },
+    },
+  ].filter(Boolean),
+}
